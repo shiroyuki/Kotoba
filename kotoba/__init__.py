@@ -1,3 +1,4 @@
+from os.path           import exists
 from xml.dom.minidom   import parse, parseString
 from xml.parsers.expat import ExpatError
 
@@ -22,6 +23,9 @@ def load_from_file(filename):
         
     :return: :class `kotoba.kotoba.Kotoba`: if the parser can parse the data.
     """ 
+    if not exists(filename):
+        return None
+    
     try:
         node = __load(filename)
     except ExpatError:
