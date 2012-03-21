@@ -2,14 +2,15 @@ from os.path           import exists
 from xml.dom.minidom   import parse, parseString
 from xml.parsers.expat import ExpatError
 
-from .common import is_string
-from .kotoba import Kotoba
+from .common    import is_string
+from .kotoba    import Kotoba
+from .exception import *
 
 __version__ = '3.0-DEV'
 
 def __load(data, from_file=True):
     if not is_string(data):
-        raise InvalidDataSourceError
+        raise InvalidDataSourceError, 'Expected a string.'
     
     domDocument = from_file and parse(data) or parseString(data)
     
@@ -24,7 +25,7 @@ def load_from_file(filename):
     :return: :class `kotoba.kotoba.Kotoba`: if the parser can parse the data.
     """ 
     if not exists(filename):
-        return None
+        raise InvalidDataSourceError, 'File not found at %s' % filename
     
     try:
         node = __load(filename)

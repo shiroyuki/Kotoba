@@ -1,9 +1,11 @@
 from re      import split
 from time    import time
+
 from .common    import node_debug_message, is_string
 from .exception import *
 from .graph     import Vertex
-from .selector  import make_selector, PathType
+from .selector  import PathType
+from .parser    import selector as parse_selector
 
 class Kotoba(Vertex):
     '''
@@ -58,10 +60,13 @@ class Kotoba(Vertex):
         return self._parent
     
     def attribute(self, key):
-        if not self.node().attributes.has_key(key):
+        if not self.attributes().has_key(key):
             return None
         
-        return self.node().attributes[key].value
+        return self.attributes()[key].value
+    
+    def attributes(self):
+        return self.node().attributes
     
     def children(self, selector=None, include_data_blocks=False):
         if not self._is_children_initialized:
@@ -80,7 +85,7 @@ class Kotoba(Vertex):
             self._is_children_initialized = True
         
         if is_string(selector):
-            selector = make_selector(selector)
+            selector = parse_selector(selector)
         
         returnees = self._children
         
@@ -93,7 +98,7 @@ class Kotoba(Vertex):
     
     def find(self, selector):
         if is_string(selector):
-            selector = make_selector(selector)
+            selector = parse_selector(selector)
         
         if not selector:
             raise InvalidSelectorError
@@ -215,6 +220,22 @@ class Kami(list):
     '''
     def __init__(self):
         self.__registered_nodes = []
+    
+    def children(self, selector=None):
+        result = Kami()
+        
+        for item in self:
+            result.extend(item.children(selector))
+        
+        return result
+    
+    def find(self, selector):
+        result = Kami()
+        
+        for item in self:
+            result.extend(item.find(selector))
+        
+        return result
     
     def data(self):
         output = []
