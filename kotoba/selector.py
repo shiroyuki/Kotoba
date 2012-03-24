@@ -119,12 +119,12 @@ class Attribute(object):
     
     def match(self, vertex):
         try:
-            attribute = vertex.attribute(self.name())
+            attribute_value = vertex.attribute(self.name())
             
-            assert attribute is not None
+            assert attribute_value is not None
             
             if self.operator() == '=':
-                assert self.value() == attribute
+                assert self.value() == attribute_value
         
         except AssertionError:
             return False
