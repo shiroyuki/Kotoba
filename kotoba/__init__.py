@@ -27,14 +27,12 @@ def load_from_file(filename):
     if not exists(filename):
         raise InvalidDataSourceError, 'File not found at %s' % filename
     
-    try:
-        node = __load(filename)
-    except ExpatError:
-        return None
+    node = __load(filename)
         
     return Kotoba(node)
-    
-def load_from_string(self, content):
+
+# Disabled until the API is stable.
+def __load_from_string(self, content):
     """
     Load from the *content*.
         

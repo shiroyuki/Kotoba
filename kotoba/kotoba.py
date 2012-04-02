@@ -110,6 +110,9 @@ class Kotoba(Vertex):
         
         return returnees
     
+    def __repr__(self):
+        return '<%s:%s>' % (self.__class__.__name__, self.name())
+    
     @staticmethod
     def _direct_search(node, selector):
         node_debug_message(node, node)
