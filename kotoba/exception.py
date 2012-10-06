@@ -10,5 +10,5 @@ class InvalidInputError(Exception):
 class FileNotFoundError(Exception):
     ''' Exception: File not found '''
 
-class SelectorSyntaxError(Exception):
+class LexicalError(Exception):
     ''' Exception: Selector Syntax Error '''
