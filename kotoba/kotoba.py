@@ -66,7 +66,7 @@ class Kotoba(Vertex):
         return self.attributes()[key].value
 
     def has_attribute(self, key):
-        return self.attributes().has_key(key)
+        return key in self.attributes()
 
     def attributes(self):
         if not self._attributes:

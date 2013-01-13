@@ -6,7 +6,7 @@ from .common    import is_string
 from .kotoba    import Kotoba
 from .exception import *
 
-__version__ = '3.0-DEV'
+__version__ = (3, 0, 1)
 
 def __load(data, from_file=True):
     if not is_string(data):
