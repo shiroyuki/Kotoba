@@ -1,7 +1,7 @@
 Kotoba
 ======
 
-[![Build Status](https://travis-ci.org/shiroyuki/Tori.png)](https://travis-ci.org/shiroyuki/Tori)
+[![Build Status](https://travis-ci.org/shiroyuki/Kotoba.png)](https://travis-ci.org/shiroyuki/Kotoba)
 
 XML Parser with CSS Selector
 
