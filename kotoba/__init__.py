@@ -6,7 +6,7 @@ from .common    import is_string
 from .kotoba    import Kotoba
 from .exception import *
 
-__version__ = (3, 0, 1)
+__version__ = (3, 1, 0)
 
 def __load(data, from_file=True):
     if not is_string(data):
@@ -25,7 +25,7 @@ def load_from_file(filename):
     :return: :class `kotoba.kotoba.Kotoba`: if the parser can parse the data.
     """
     if not exists(filename):
-        raise InvalidDataSourceError('File not found at %s' % filename)
+        raise InvalidDataSourceError('File not found at {}'.format(filename))
 
     node = __load(filename)
 

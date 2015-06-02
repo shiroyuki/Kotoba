@@ -72,6 +72,19 @@ class Selector(BaseVertex):
 
         return True
 
+    def attribute(self, name):
+        """ Get the attribute by name
+
+            .. versionadded:: 3.1
+        """
+        attributes = self.attributes()
+
+        for attribute in attributes:
+            if attribute.name() == name:
+                return attribute.value()
+
+        return None
+
     def __str__(self):
         return u'SELECTOR %s' % self.name()
 
