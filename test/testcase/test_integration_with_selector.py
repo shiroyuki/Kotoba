@@ -45,6 +45,10 @@ class TestIntegrationWithSelector(TestCase):
         nodes = self.y.find('entity[id="poo"]')
         self.assertEquals(len(nodes), 1)
 
+    def test_selector_with_attributes_without_quotation_marks(self):
+        nodes = self.y.find('entity[id=poo]')
+        self.assertEquals(len(nodes), 1)
+
 
 
 

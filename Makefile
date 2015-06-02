@@ -1,2 +1,2 @@
-test:
-	python -B test/test.py
+tests:
+	@nosetests test/

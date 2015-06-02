@@ -17,8 +17,8 @@ if test_path not in sys.path:
 
 sys.path.insert(0, test_path)
 
-suite = unittest.TestLoader().discover(
-    bootstrap.testing_base_path,
-    pattern='test_*.py'
-)
-unittest.TextTestRunner(verbosity=1).run(suite)
+# suite = unittest.TestLoader().discover(
+#     bootstrap.testing_base_path,
+#     pattern='test_*.py'
+# )
+# unittest.TextTestRunner(verbosity=1).run(suite)
