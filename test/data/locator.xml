@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--doctype imagination public "//shiroyuki//dtd imagination 1.0" "http://dev.shiroyuki.com/dtd/imagination-1.0.dtd"-->
 <imagination>
-    <entity id="poo" class="dummy.core.PlainOldObject"></entity>
+    <entity id="poo" class="dummy.core.PlainOldObject">python soup</entity>
     <entity id="poow-1" class="dummy.core.PlainOldObjectWithParameters">
         <param name="a" type="int">2</param>
         <param name="b" type="float">3</param>
