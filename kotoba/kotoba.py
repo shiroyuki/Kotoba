@@ -8,7 +8,7 @@ from .selector  import PathType
 from .parser    import selector as parse_selector
 
 class Kotoba(Vertex):
-    '''
+    """
     XML Parser with Level-3 CSS Selectors
 
     *source* can be a string representing the file path or the XML data, or Kotoba node.
@@ -19,15 +19,13 @@ class Kotoba(Vertex):
     * all four combinations of selectors are supported (e.g., ``selector_1 operator_1 selector_2 ...``)
     * support wildcard search (only for element name)
     * support multi combinations in a single statement (e.g., ``combo_1, combo_2``)
-    '''
+    """
 
     static_guid = 1
     debug_mode  = False
 
     def __init__(self, node=None, level=0):
-        """
-        Construct an XML parser using CSS3 selectors
-        """
+        """ Construct an XML parser using CSS3 selectors """
         super(self.__class__, self).__init__()
 
         self._guid   = Kotoba.static_guid
@@ -114,7 +112,7 @@ class Kotoba(Vertex):
         return returnees
 
     def __repr__(self):
-        return '<%s:%s>' % (self.__class__.__name__, self.name())
+        return '<{}:{}>'.format(self.__class__.__name__, self.name())
 
     @staticmethod
     def _direct_search(node, selector):
@@ -209,26 +207,24 @@ class Kotoba(Vertex):
             return
 
         if label:
-            self.debug_message('[%s]' % label, ignore_indentation)
+            self.debug_message('[{}]'.format(label), ignore_indentation)
 
-        self.debug_message('CURRENT: %s' % self, ignore_indentation)
-        self.debug_message('PARENT:  %s' % self.parent(), ignore_indentation)
-        self.debug_message('KIND: %s' % self.kind(), ignore_indentation)
+        self.debug_message('CURRENT: {}'.format(self), ignore_indentation)
+        self.debug_message('PARENT:  {}'.format(self.parent()), ignore_indentation)
+        self.debug_message('KIND: {}'.format(self.kind()), ignore_indentation)
 
     def __str__(self):
-        representative = 'NODE %s AT LEVEL %s (%s)' % (self.name(), self.level(), self._guid)
+        representative = 'NODE {} AT LEVEL {} ({})'.format(self.name(), self.level(), self._guid)
 
         if self.is_data():
-            representative = 'NODE [DATA] AT LEVEL %s (%s)' % (self.level(), self._guid)
+            representative = 'NODE [DATA] AT LEVEL {} ({})'.format(self.level(), self._guid)
         elif not self.name():
-            representative = 'NODE [TYPE-%d] AT LEVEL %s (%s)' % (self.kind(), self.level(), self._guid)
+            representative = 'NODE [TYPE-{}] AT LEVEL {} ({})'.format(self.kind(), self.level(), self._guid)
 
         return representative
 
 class Kami(list):
-    '''
-    The list of :class:`kotoba.kotoba.Kotoba`.
-    '''
+    """ The list of :class:`kotoba.kotoba.Kotoba`. """
     def __init__(self):
         self.__registered_nodes = []
 
