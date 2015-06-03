@@ -11,7 +11,7 @@ class Kotoba(Vertex):
     """
     XML Parser with Level-3 CSS Selectors
 
-    *source* can be a string representing the file path or the XML data, or Kotoba node.
+    :param kotoba.driver.IDriver node:
 
     Currently supported selectors:
 
@@ -61,23 +61,24 @@ class Kotoba(Vertex):
         if not key in self.attributes():
             return None
 
-        return self.attributes()[key].value
+        return self.attributes()[key]
 
     def has_attribute(self, key):
         return key in self.attributes()
 
     def attributes(self):
         if not self._attributes:
-            self._attributes = dict(self.node().attributes)
+            self._attributes = dict(self.node().attributes())
 
         return self._attributes
 
     def children(self, selector=None, include_data_blocks=False):
         if not self._is_children_initialized:
-            for original_child_node in self._node.childNodes:
-                child_node = Kotoba(original_child_node, self.level() + 1)
+            for original_child_node in self._node.children():
+                node_wrapper = self._node.__class__(original_child_node) # Instantiate the same node driver.
+                child_node   = Kotoba(node_wrapper, self.level() + 1)
 
-                if (child_node.is_data() and not child_node.node().nodeValue) or child_node.is_comment():
+                if (child_node.is_data() and not child_node.original_value()) or child_node.is_comment():
                     continue
 
                 child_node.parent(self)
@@ -163,26 +164,34 @@ class Kotoba(Vertex):
         if not node: return
 
         self._is_initialized = True
-        self._node = node
-        self.name(self._node.nodeName)
+        self._node           = node
 
-        return self
+        self.name(node.name())
 
     def node(self, node=None):
         self.init(node)
+
         return self._node
+
+    def original_value(self):
+        """ Retrieve the value of the node (node driver).
+
+            .. versionadded:: 3.1
+        """
+
+        return self._node.value()
 
     def kind(self):
         return self._node.nodeType
 
     def is_element(self):
-        return self._node.nodeType == self._node.ELEMENT_NODE
+        return self._node.is_element()
 
     def is_comment(self):
-        return self._node.nodeType == self._node.COMMENT_NODE
+        return self._node.is_comment()
 
     def is_data(self):
-        return self._node.nodeType in [self._node.CDATA_SECTION_NODE, self._node.TEXT_NODE]
+        return self._node.is_data()
 
     def data(self):
         if not self._data:
@@ -190,7 +199,7 @@ class Kotoba(Vertex):
 
             for child in self.children(None, True):
                 if child.is_data():
-                    data = child.node().nodeValue
+                    data = child.original_value()
 
                     self._data.append(data)
 
