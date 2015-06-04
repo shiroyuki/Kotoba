@@ -1,49 +1,43 @@
-from os.path           import exists
+import codecs
+import json
+import os
+import re
 from xml.dom.minidom   import parse, parseString
-from xml.parsers.expat import ExpatError
 
 from .common    import is_string
-from .driver    import XMLDriver
+from .driver    import JSONDriver, XMLDriver
 from .kotoba    import Kotoba
 from .exception import *
 
 __version__ = (3, 1, 0)
 
-def __load_xml(data, from_file=True):
-    if not is_string(data):
-        raise InvalidDataSourceError('Expected a string.')
-
-    domDocument = from_file and parse(data) or parseString(data)
+def __load_xml(file_path):
+    domDocument = parse(file_path)
 
     return XMLDriver(domDocument.documentElement)
 
-def load_from_file(filename):
+def __load_json(file_path):
+    with codecs.open(file_path) as f:
+        obj = json.load(f)
+
+    return JSONDriver(obj, 'root')
+
+def load_from_file(file_path):
     """
     Load from the *filename*.
 
-    :param `filename`: the location of the data.
+    :param file_path: the location of the data.
 
     :return: :class `kotoba.kotoba.Kotoba`: if the parser can parse the data.
     """
-    if not exists(filename):
-        raise InvalidDataSourceError('File not found at {}'.format(filename))
+    if not os.path.exists(file_path):
+        raise InvalidDataSourceError('The path {} is not found.'.format(file_path))
 
-    node = __load_xml(filename)
+    if os.path.isdir(file_path):
+        raise InvalidDataSourceError('The path {} is not a file.'.format(file_path))
 
-    return Kotoba(node)
+    if re.search('\.json', file_path, re.I):
+        return Kotoba(__load_json(file_path))
 
-# Disabled until the API is stable.
-def __load_from_string(self, content):
-    """
-    Load from the *content*.
-
-    :param `content`: the content of the data.
-
-    :return: :class `kotoba.kotoba.Kotoba`: if the parser can parse the data.
-    """
-    try:
-        node = __load(content, False)
-    except ExpatError:
-        return None
-
-    return Kotoba(node)
+    # default to XML
+    return Kotoba(__load_xml(file_path))

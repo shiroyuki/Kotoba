@@ -4,6 +4,7 @@ from time    import time
 from .common    import node_debug_message, is_string
 from .exception import *
 from .graph     import Vertex
+from .kami      import Kami
 from .selector  import PathType
 from .parser    import selector as parse_selector
 
@@ -40,7 +41,7 @@ class Kotoba(Vertex):
         # lazy-loading flag
         self._is_children_initialized = False
 
-        self.init(node)
+        self.name(node.name())
 
         # Take care of static data
         Kotoba.static_guid += 1
@@ -74,18 +75,7 @@ class Kotoba(Vertex):
 
     def children(self, selector=None, include_data_blocks=False):
         if not self._is_children_initialized:
-            for original_child_node in self._node.children():
-                node_wrapper = self._node.__class__(original_child_node) # Instantiate the same node driver.
-                child_node   = Kotoba(node_wrapper, self.level() + 1)
-
-                if (child_node.is_data() and not child_node.original_value()) or child_node.is_comment():
-                    continue
-
-                child_node.parent(self)
-                self.adjacents().append(child_node)
-
-                if child_node.is_element():
-                    self._children.append(child_node)
+            self._node.__class__.initialize_children(self)
 
             self._is_children_initialized = True
 
@@ -106,7 +96,7 @@ class Kotoba(Vertex):
             selector = parse_selector(selector)
 
         if not selector:
-            raise InvalidSelectorError
+            raise InvalidSelectorError()
 
         returnees = Kotoba._direct_search(self, selector)
 
@@ -160,17 +150,7 @@ class Kotoba(Vertex):
 
         return returnees
 
-    def init(self, node=None):
-        if not node: return
-
-        self._is_initialized = True
-        self._node           = node
-
-        self.name(node.name())
-
-    def node(self, node=None):
-        self.init(node)
-
+    def node(self):
         return self._node
 
     def original_value(self):
@@ -195,19 +175,7 @@ class Kotoba(Vertex):
 
     def data(self):
         if not self._data:
-            self._data = []
-
-            for child in self.children(None, True):
-                if child.is_data():
-                    data = child.original_value()
-
-                    self._data.append(data)
-
-                    continue
-
-                self._data.append(child.data())
-
-            self._data = ''.join(self._data)
+            self._data = self._node.__class__.retrieve_data(self)
 
         return self._data
 
@@ -231,44 +199,3 @@ class Kotoba(Vertex):
             representative = 'NODE [TYPE-{}] AT LEVEL {} ({})'.format(self.kind(), self.level(), self._guid)
 
         return representative
-
-class Kami(list):
-    """ The list of :class:`kotoba.kotoba.Kotoba`. """
-    def __init__(self):
-        self.__registered_nodes = []
-
-    def children(self, selector=None):
-        result = Kami()
-
-        for item in self:
-            result.extend(item.children(selector))
-
-        return result
-
-    def find(self, selector):
-        result = Kami()
-
-        for item in self:
-            result.extend(item.find(selector))
-
-        return result
-
-    def data(self):
-        output = []
-
-        for kotoba in self:
-            output.append(kotoba.data())
-
-        return ''.join(output)
-
-    def append(self, kotoba):
-        if kotoba.guid() in self.__registered_nodes:
-            return
-
-        self.__registered_nodes.append(kotoba.guid())
-
-        super(Kami, self).append(kotoba)
-
-    def extend(self, other_kami):
-        for kotoba in other_kami:
-            self.append(kotoba)

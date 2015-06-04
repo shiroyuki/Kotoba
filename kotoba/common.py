@@ -2,13 +2,15 @@ import logging
 import sys
 from . import misc
 
+DEFAULT_LOG_LEVEL = logging.DEBUG
+
 class LoggerRepository(object):
     _cache = {}
 
     @staticmethod
     def get(name, level=logging.DEBUG, show_time=True):
-        if name in LoggerFactory._cache:
-            return LoggerFactory._cache[name]
+        if name in LoggerRepository._cache:
+            return LoggerRepository._cache[name]
 
         logging_handler = logging.StreamHandler()
         logging_handler.setLevel(level)
@@ -25,7 +27,7 @@ class LoggerRepository(object):
         logger.addHandler(logging_handler)
         logger.setLevel(level)
 
-        LoggerFactory._cache[name] = logger
+        LoggerRepository._cache[name] = logger
 
         return logger
 
@@ -33,7 +35,7 @@ def node_debug_message(node, message, ignore_indentation=False):
     if not misc.debug_mode:
         return
 
-    LoggerRepository.get('Node', logging.ERROR).debug(
+    LoggerRepository.get('Node', DEFAULT_LOG_LEVEL).debug(
         message if ignore_indentation else '%s%s' % (' ' * node.level() * 2, message)
     )
 

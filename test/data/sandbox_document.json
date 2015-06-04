@@ -1,0 +1,18 @@
+{
+    "id":   1,
+    "name": "Juti",
+    "languages": [
+        {
+            "name": "Thai",
+            "since": "born"
+        },
+        {
+            "name": "English",
+            "since": 1989
+        },
+        {
+            "name": "Japanese",
+            "since": 2004
+        }
+    ]
+}

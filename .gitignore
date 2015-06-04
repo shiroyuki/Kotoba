@@ -1,3 +1,7 @@
+MANIFEST
+*.komodoproject
+.idea
 .DS_Store
 *.pyc
 docs/build/*
+dist
