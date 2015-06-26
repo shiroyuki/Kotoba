@@ -34,7 +34,7 @@ class JSONDriver(IDriver):
         return self._name
 
     def attributes(self):
-        return { str(k): str(v) for k, v in self.children() }
+        return { unicode(k): unicode(v) for k, v in self.children() }
 
     def children(self):
         if self._children:
