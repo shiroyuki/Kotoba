@@ -9,7 +9,9 @@ from .driver    import JSONDriver, XMLDriver
 from .kotoba    import Kotoba
 from .exception import *
 
-__version__ = (3, 1, 0)
+__all__ = ['Kotoba', 'load_from_file']
+
+__version__ = (3, 2, 0)
 
 def __load_xml(file_path):
     domDocument = parse(file_path)
@@ -36,7 +38,7 @@ def load_from_file(file_path):
     if os.path.isdir(file_path):
         raise InvalidDataSourceError('The path {} is not a file.'.format(file_path))
 
-    if re.search('\.json', file_path, re.I):
+    if re.search(r'\.json$', file_path, re.I):
         return Kotoba(__load_json(file_path))
 
     # default to XML

@@ -1,0 +1,20 @@
+[project]
+name = "kotoba"
+version = "3.1.2"
+description = "XML/JSON Reading Library with Level-3 CSS Selector"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = []
+license-files = ['LICENSE']
+
+[project.optional-dependencies]
+build = ["setuptools"]
+
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["kotoba*"]
+namespaces = false

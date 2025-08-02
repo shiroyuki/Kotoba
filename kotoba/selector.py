@@ -89,8 +89,8 @@ class Selector(BaseVertex):
         return u'SELECTOR %s' % self.name()
 
 class Attribute(object):
-    _re_syntax   = compile('^\[(?P<name>[^=~\^\$\*\|]+)(?P<operator>[~\^\$\*\|]?=?)(?P<value>.*)\]$')
-    _re_operator = compile('^[~\^\$\*\|]?=$')
+    _re_syntax   = compile(r'^\[(?P<name>[^=~\^\$\*\|]+)(?P<operator>[~\^\$\*\|]?=?)(?P<value>.*)\]$')
+    _re_operator = compile(r'^[~\^\$\*\|]?=$')
 
     @staticmethod
     def parse(raw_attribute):

@@ -5,7 +5,7 @@ except:
 
 setup(
     name         = 'Kotoba',
-    version      = '3.1.1',
+    version      = '3.1.2',
     description  = 'XML/JSON Reading Library with Level-3 CSS Selector',
     author       = 'Juti Noppornpitak',
     author_email = 'juti_n@yahoo.co.jp',

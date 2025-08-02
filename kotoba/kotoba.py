@@ -8,6 +8,8 @@ from .kami      import Kami
 from .selector  import PathType
 from .parser    import selector as parse_selector
 
+__all__ = ['Kotoba']
+
 class Kotoba(Vertex):
     """
     XML Parser with Level-3 CSS Selectors
