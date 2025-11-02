@@ -27,7 +27,7 @@ def selector(path):
     '''
     
     selector = None
-    path     = split(' ', sub('\s{2,}', ' ', path.strip()))
+    path     = split(r' ', sub(r'\s{2,}', ' ', path.strip()))
     
     previous_selector = None
     combinator        = None
